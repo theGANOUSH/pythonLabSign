@@ -22,12 +22,18 @@
 #  
 # 
 
+import socket
+import fcntl
+import struct
 import serial
 import time
 from threading import Thread
 
-
 wordList = []
+
+def getIpAddress(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(s.fileno(),0x8915, struct.pack('256s', ifname[:15]))[20:24])
 
 df = open("Dictionary.txt", "r+")
 
@@ -43,7 +49,7 @@ def loadDictionary():
 	for line in df:
 		wordList.append(line)
 		print line
-		
+
 def runSign(board):
 	L = []
 	
@@ -52,7 +58,7 @@ def runSign(board):
 
 	except:
 		raise
-		
+	
 	while True:
 		
 		for i in wordList:
@@ -65,6 +71,7 @@ def runSign(board):
 				break
 	
 def main():
+	wordList.append(getIpAddress('eth0'))
 	loadDictionary()
 	arduino = serial.Serial('/dev/ttyS0', 9600)
 	
