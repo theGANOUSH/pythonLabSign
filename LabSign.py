@@ -51,8 +51,6 @@ def runSign(board):
 		for i in wordList:
 			board.write(i)
 			delay = float(board.readline())
-			print i
-			print getTime(delay)
 			time.sleep(getTime(delay))
 			
 	
