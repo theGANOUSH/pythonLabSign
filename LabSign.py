@@ -37,12 +37,8 @@ def getIpAddress(ifname):
 
 df = open("Dictionary.txt", "r+")
 
-def inputThread(L):
-	raw_input()
-	L.append(None)
-
 def getTime(x):
-	y = (float(x) +(32.0*5.0)) * .1
+	y = float((float(x) +(32.0*5.0)) * .1)
 	return y
 	
 def loadDictionary():
@@ -51,24 +47,14 @@ def loadDictionary():
 		print line
 
 def runSign(board):
-	L = []
-	
-	try:
-		Thread(target = inputThread, args=(L)).start()
-
-	except:
-		raise
-	
 	while True:
-		
 		for i in wordList:
 			board.write(i)
 			delay = float(board.readline())
 			print i
 			print getTime(delay)
 			time.sleep(getTime(delay))
-			if L:
-				break
+			
 	
 def main():
 	wordList.append(getIpAddress('eth0'))
