@@ -1,6 +1,6 @@
-!/bin/sh
+#!/bin/sh
 
 cd /
-cd home/pi/pythonLedSign
-sudo python pythonLedSign.py
+cd home/pi/git/pythonLabSign
+sudo python LabSign.py
 cd /
