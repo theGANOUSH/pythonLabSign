@@ -21,7 +21,7 @@
 #  MA 02110-1301, USA.
 #  
 # 
-
+import datetime
 import socket
 import fcntl
 import struct
@@ -30,6 +30,23 @@ import time
 from threading import Thread
 
 wordList = []
+weekday = {0: "Welcome Back Monday", 1: "Pop Tuesday", 2: "Blues Wednesday", 3: "Throwback Thursday!", 4: "Rocking Friday"};
+    
+
+def returnFloat(a):
+    return float(a)
+    
+def scanWeek():
+    today = datetime.datetime.today().weekday()
+    yesterday = today - 1
+    
+    if(yesterday == -1):
+        yesterday = 4
+    i = 0
+    for line in wordList:
+        if(wordList[i] == weekday[yesterday]):
+            wordList[i] = weekday[today]
+        i += 1
 
 def getIpAddress(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -50,12 +67,14 @@ def runSign(board):
 	while True:
 		for i in wordList:
 			board.write(i)
-			delay = float(board.readline())
-			time.sleep(getTime(delay))
-			
-	
+			delay = board.readline()
+			time.sleep(getTime(float(delay)))
+			scanWeek()
+						
 def main():
 	wordList.append(getIpAddress('eth0'))
+	wordList.append(weekday[1])
+		
 	loadDictionary()
 	arduino = serial.Serial('/dev/ttyS0', 9600)
 	
